@@ -1,0 +1,12 @@
+challenge:
+  autorun: false
+  candidate:
+    name: Test User
+    reg-no: TST0011
+    email: test@example.com
+  api:
+    base-url: http://localhost
+    generate-path: /generateWebhook/JAVA
+  retry:
+    max-attempts: 2
+    backoff-ms: 10
