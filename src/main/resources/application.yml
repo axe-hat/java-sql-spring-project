@@ -1,0 +1,22 @@
+spring:
+  main:
+    web-application-type: none
+    banner-mode: "off"
+
+logging:
+  level:
+    com.hiring.sqlchallenge: INFO
+
+challenge:
+  autorun: true
+  candidate:
+    # Supplied at runtime; never commit real values.
+    name: ${CANDIDATE_NAME:}
+    reg-no: ${CANDIDATE_REG_NO:}
+    email: ${CANDIDATE_EMAIL:}
+  api:
+    base-url: https://bfhldevapigw.healthrx.co.in/hiring
+    generate-path: /generateWebhook/JAVA
+  retry:
+    max-attempts: 4
+    backoff-ms: 1000
