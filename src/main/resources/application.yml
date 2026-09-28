@@ -18,5 +18,9 @@ challenge:
     base-url: https://bfhldevapigw.healthrx.co.in/hiring
     generate-path: /generateWebhook/JAVA
   retry:
+    # applies to both calls; only 5xx and network / timeout errors are retried
     max-attempts: 4
     backoff-ms: 1000
+  http:
+    connect-timeout: 10s
+    read-timeout: 30s

@@ -38,6 +38,13 @@ class SqlSolutionProviderTest {
     }
 
     @Test
+    void questionNumberFollowsRegNoParity() {
+        assertThat(provider.questionFor("TST0043")).isEqualTo(1);
+        assertThat(provider.questionFor("TST0042")).isEqualTo(2);
+        assertThat(provider.questionFor("REG10")).isEqualTo(2);
+    }
+
+    @Test
     void loadedQueryIsTrimmedNotEmpty() {
         String query = provider.forRegNo("TST0042");
         assertThat(query).isNotBlank();

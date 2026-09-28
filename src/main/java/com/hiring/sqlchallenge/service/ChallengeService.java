@@ -36,7 +36,8 @@ public class ChallengeService {
                 new WebhookRequest(candidate.getName(), candidate.getRegNo(), candidate.getEmail()));
 
         String query = solutionProvider.forRegNo(candidate.getRegNo());
-        log.info("Selected query for regNo ending {}", candidate.getRegNo());
+        log.info("Selected question {} from the registration number",
+                solutionProvider.questionFor(candidate.getRegNo()));
 
         String result = client.submitSolution(
                 registration.webhook(), registration.accessToken(), new SolutionRequest(query));

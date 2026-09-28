@@ -23,9 +23,16 @@ public class SqlSolutionProvider {
 
     /** Returns the final query for the given registration number. */
     public String forRegNo(String regNo) {
-        int lastTwo = lastTwoDigits(regNo);
-        String resource = (lastTwo % 2 == 1) ? ODD_QUERY : EVEN_QUERY;
-        return load(resource);
+        return load(isOdd(regNo) ? ODD_QUERY : EVEN_QUERY);
+    }
+
+    /** Which question the registration number is assigned: 1 (odd) or 2 (even). */
+    public int questionFor(String regNo) {
+        return isOdd(regNo) ? 1 : 2;
+    }
+
+    private boolean isOdd(String regNo) {
+        return lastTwoDigits(regNo) % 2 == 1;
     }
 
     /** Trailing two digits of the registration number, e.g. {@code TST0042 -> 42}. */

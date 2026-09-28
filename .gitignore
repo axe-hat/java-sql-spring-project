@@ -19,3 +19,7 @@ bin/
 # OS-specific files
 .DS_Store
 Thumbs.db
+
+# Local environment / secrets (candidate details are passed as env vars)
+.env
+.env.*

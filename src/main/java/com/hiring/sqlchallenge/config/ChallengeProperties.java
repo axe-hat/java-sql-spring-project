@@ -4,8 +4,12 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;
+
+import java.time.Duration;
 
 /**
  * Everything the run needs, bound from {@code challenge.*} and validated at
@@ -27,6 +31,9 @@ public class ChallengeProperties {
 
     @Valid
     private Retry retry = new Retry();
+
+    @Valid
+    private Http http = new Http();
 
     public boolean isAutorun() {
         return autorun;
@@ -60,13 +67,23 @@ public class ChallengeProperties {
         this.retry = retry;
     }
 
+    public Http getHttp() {
+        return http;
+    }
+
+    public void setHttp(Http http) {
+        this.http = http;
+    }
+
     /** Identity submitted to the hiring API. Supplied via environment, never committed. */
     public static class Candidate {
 
         @NotBlank
         private String name;
 
+        /** Its trailing digits pick the question, so it must contain at least one. */
         @NotBlank
+        @Pattern(regexp = ".*\\d.*", message = "must contain at least one digit")
         private String regNo;
 
         @NotBlank
@@ -124,7 +141,7 @@ public class ChallengeProperties {
         }
     }
 
-    /** Backoff for the final submit, which is the flaky part of the flow. */
+    /** Retry policy for both HTTP calls (only transient failures are retried). */
     public static class Retry {
 
         @Min(1)
@@ -147,6 +164,32 @@ public class ChallengeProperties {
 
         public void setBackoffMs(long backoffMs) {
             this.backoffMs = backoffMs;
+        }
+    }
+
+    /** Connection and read timeouts, so a hung endpoint cannot stall the run. */
+    public static class Http {
+
+        @NotNull
+        private Duration connectTimeout = Duration.ofSeconds(10);
+
+        @NotNull
+        private Duration readTimeout = Duration.ofSeconds(30);
+
+        public Duration getConnectTimeout() {
+            return connectTimeout;
+        }
+
+        public void setConnectTimeout(Duration connectTimeout) {
+            this.connectTimeout = connectTimeout;
+        }
+
+        public Duration getReadTimeout() {
+            return readTimeout;
+        }
+
+        public void setReadTimeout(Duration readTimeout) {
+            this.readTimeout = readTimeout;
         }
     }
 }

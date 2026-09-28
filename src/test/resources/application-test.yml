@@ -8,5 +8,8 @@ challenge:
     base-url: http://localhost
     generate-path: /generateWebhook/JAVA
   retry:
-    max-attempts: 2
+    max-attempts: 3
     backoff-ms: 10
+  http:
+    connect-timeout: 2s
+    read-timeout: 2s
